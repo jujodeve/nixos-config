@@ -4,7 +4,7 @@
 
 Run the command
    
-    bash <(curl -fsSL https://gitlab.com/jotix/nixos-config/-/raw/main/scripts/nixos-install.sh)
+    bash <(curl -fsSL https://raw.githubusercontent.com/jujodeve/nixos-config/refs/heads/main/scripts/nixos-install.sh)
 	
 ## Preparation
 
