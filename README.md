@@ -1,11 +1,5 @@
 # NixOS
 
-## Easy install
-
-Run the command
-   
-    bash <(curl -fsSL https://gitlab.com/jotix/nixos-config/-/raw/main/scripts/nixos-install.sh)
-	
 ## Preparation
 
 ### Disk layout
@@ -21,19 +15,19 @@ In a disk with GPT partition type, create the following partitions:
 |      |            |      |         |      | @nix      | /nix       |
 |      |            |      |         |      | @home     | /home      |
 
-### Disk subvolumes & mount points 
+### Disk subvolumes & mount points
 
     ### make sure nothing in mounted in /mnt
-	sudo umount -R /mnt
-	
-	### create the subvolumes
+    sudo umount -R /mnt
+
+    ### create the subvolumes
     sudo mount LABEL=NixOS /mnt
     sudo btrfs subvolume create /mnt/@
     sudo btrfs subvolume create /mnt/@nix
     sudo btrfs subvolume create /mnt/@home
     sudo umount -R /mnt
-    
-	### make the directories for the new system
+
+    ### make the directories for the new system
     sudo mount LABEL=NixOS /mnt -osubvol=/@
     sudo mkdir -p /mnt/home
     sudo mkdir -p /mnt/nix
@@ -85,38 +79,11 @@ add virtiofsd into your systemPackages and add following into virt-manager files
 
     <binary path="/run/current-system/sw/bin/virtiofsd"/>
 
-# Plasma packages
-
-paquetes que recopile tratando de hacer funcionar
-las cuentas online (google drive)
-pero nada funciona hasta ahora
-
-    [
-      libsForQt5.plasma-browser-integration
-      libsForQt5.kaccounts-integration
-      libsForQt5.kaccounts-providers
-      libsForQt5.kio-gdrive
-      libsForQt5.signond
-      libsForQt5.qoauth
-      libsForQt5.accounts-qt
-      libsForQt5.mauikit-accounts
-    ] ++ (with lib; filter isDerivation (attrValues pkgs.plasma5Packages.kdeGear)); ## for install all kde apps
-
 # Uninstalling home-manager
 
     nix run home-manager/release-24.05 -- uninstall
 
 # Network Printers
-
-Edit the Device URI in /etc/cups/printers.conf
-
-    ...
-    DeviceURI ...........
-    ...
-
-Restart cups
-
-    sudo systemctl restart cups
 
 Impresora Brother HL-1212W connection
 
@@ -195,22 +162,3 @@ Impresora HPRT TP806L
 
     ! Hide shorts tab on channel pages
     m.youtube.com##.single-column-browse-results-tabs>a:has-text(Shorts)
-
-# Launch a virtual monitor with kwin_wayland
-
-    export $(dbus-launch); kwin_wayland -s "wayland-1" --xwayland plasmashell
-
-# dd iso file in USB device
-
-    dd bs=4M if=path/to/archlinux-version-x86_64.iso of=/dev/disk/by-id/usb-My_flash_drive conv=fsync oflag=direct status=progress
-
-# creating 7z encypted file
-
-    s7z a \
-       -t7z -m0=lzma2 -mx=9 -mfb=64 \
-       -md=32m -ms=on -mhe=on -p'eat_my_shorts' \
-       archive.7z dir1
-
-# IP camera as webcam
-
-    sudo modprobe v4l2loopbak-dkms
