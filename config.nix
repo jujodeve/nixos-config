@@ -30,10 +30,19 @@ in
   system.stateVersion = "24.11";
 
   ### boot loader #############################################################
-  boot.loader = {
-    systemd-boot.enable = true;
-    systemd-boot.consoleMode = "auto";
-    efi.canTouchEfiVariables = true;
+  boot = {
+    loader = {
+      efi = {
+        canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot/efi";
+      };
+      grub = {
+        enable = true;
+        efiSupport = true;
+        device = "nodev";
+        # useOSProber = true;
+      };
+    };
   };
 
   ### graphics drivers ########################################################

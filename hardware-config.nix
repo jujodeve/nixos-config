@@ -50,7 +50,7 @@ in
   };
 
   ### efi
-  fileSystems."/boot" = {
+  fileSystems."/boot/efi" = {
     device = "/dev/disk/by-label/NIXOS-BOOT";
     fsType = "vfat";
     options = [
@@ -75,13 +75,7 @@ in
     }
   ];
 
-  fileSystems."/mnt/jtx-data" = lib.mkIf (hostname != "virt-nixos") {
-    device = "/dev/disk/by-label/jtx-data";
-    fsType = "btrfs";
-    options = [ "subvol=/" ];
-  };
-
-  fileSystems."/mnt/jtx-ssd" = lib.mkIf (hostname == "jtx-nixos") {
+  fileSystems."/mnt/jtx-ssd" = lib.mkIf (hostname == "jtx-nixos" || hostname == "ffm-nixos") {
     device = "/dev/disk/by-label/jtx-ssd";
     fsType = "btrfs";
     options = [ "subvol=/" ];
