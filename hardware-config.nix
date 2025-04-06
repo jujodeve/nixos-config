@@ -51,7 +51,7 @@ in
 
   ### efi
   fileSystems."/boot/efi" = {
-    device = "/dev/disk/by-label/NIXOS-BOOT";
+    device = "/dev/disk/by-label/NIXOS-EFI";
     fsType = "vfat";
     options = [
       "fmask=0077"
