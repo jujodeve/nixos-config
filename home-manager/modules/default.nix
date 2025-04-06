@@ -19,7 +19,7 @@
 
   fish.enable = lib.mkIf osConfig.fish.enable true;
   bash.enable = lib.mkIf (!osConfig.fish.enable) true;
-  # emacs.enable = lib.mkDefault true;
+  emacs.enable = lib.mkDefault true;
   helix.enable = lib.mkDefault true;
   # neovim.enable = lib.mkDefault true;
   # zed.enable = lib.mkDefault true;
