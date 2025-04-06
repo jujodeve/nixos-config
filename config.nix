@@ -133,44 +133,22 @@ in
 
   ### packages #################################################################
   environment.systemPackages = with pkgs; [
-    exfat
-    exfatprogs
-    ntfs3g
     usbutils
     pciutils
-    gnumake
-    cmake
-    gcc
     nixd
     nixfmt-rfc-style
-    zip
-    unzip
-    p7zip
     killall
     wget
     fastfetch
-    wlr-randr
     mpv
-    htop
-    fuse
-    wl-clipboard
-    xclip
     virtiofsd
     gparted
     qmk
     qmk-udev-rules
-    vial
-    spotify
     gimp
     rclone
-    libreoffice
-    inkscape
-    python3
     ventoy-full
-    transmission_3
-    transmission_3-qt
     ghostscript
-    google-chrome
     firefox
     dwt1-shell-color-scripts
   ];
