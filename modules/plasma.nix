@@ -22,15 +22,20 @@
 
     services.desktopManager.plasma6.enable = true;
 
-    environment.systemPackages =
-      pkgs.kdePackages.sources
-      |> builtins.attrNames
-      |> builtins.map (n: pkgs.kdePackages.${n})
-      |> builtins.filter (pkg: !pkg.meta.broken);
-
-    nixpkgs.config.permittedInsecurePackages = [
-      "olm-3.2.16"
+    environment.systemPackages = with pkgs; [
+      kdePackages.kate
+      kdePackages.kcalc
+      kdePackages.plasma-browser-integration
+      kitty
     ];
+    # for installing all kdePackages
+    # ++ kdePackages.sources
+    #   |> builtins.attrNames
+    #   |> builtins.map (n: kdePackages.${n})
+    #   |> builtins.filter (pkg: !pkg.meta.broken);
+    # nixpkgs.config.permittedInsecurePackages = [
+    #   "olm-3.2.16"
+    # ];
 
     programs.chromium.plasmaBrowserIntegrationPackage = pkgs.kdePackages.plasma-browser-integration;
 

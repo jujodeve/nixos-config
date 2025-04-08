@@ -4,7 +4,6 @@
   config,
   lib,
   pkgs,
-  inputs,
   ...
 }:
 
@@ -16,7 +15,6 @@ in
   imports = [
     ./modules/default.nix
     ./hardware-config.nix
-    inputs.home-manager.nixosModules.default
   ];
 
   nix.settings.experimental-features = [
@@ -30,19 +28,10 @@ in
   system.stateVersion = "24.11";
 
   ### boot loader #############################################################
-  boot = {
-    loader = {
-      efi = {
-        canTouchEfiVariables = true;
-        efiSysMountPoint = "/boot/efi";
-      };
-      grub = {
-        enable = true;
-        efiSupport = true;
-        device = "nodev";
-        # useOSProber = true;
-      };
-    };
+  boot.loader = {
+    systemd-boot.enable = true;
+    systemd-boot.consoleMode = "auto";
+    efi.canTouchEfiVariables = true;
   };
 
   ### graphics drivers ########################################################
@@ -95,6 +84,7 @@ in
       "libvirtd"
     ];
   };
+  users.defaultUserShell = pkgs.fish;
 
   users.users.filofem = lib.mkIf (hostname == "ffm-nixos") {
     isNormalUser = true;
@@ -104,13 +94,16 @@ in
     ];
   };
 
-  ### home-manager #############################################################
-  home-manager.useGlobalPkgs = true;
-  home-manager.useUserPackages = true;
-  home-manager.backupFileExtension = "hm.backup";
-  home-manager.users.jotix = import ./home-manager/home.nix;
-  home-manager.users.filofem = lib.mkIf (hostname == "ffm-nixos") {
-    imports = [ ./home-manager/filofem-home.nix ];
+  ### shell aliases ############################################################
+  environment.shellAliases = {
+    rebuild = "sudo nixos-rebuild switch --flake .#";
+    rebuild-boot = "sudo nixos-rebuild boot --flake .#";
+    cdc = "cd ~/workspace/nixos-config";
+    gitroot = "cd $(git rev-parse --show-toplevel)";
+    gr = "gitroot";
+    google_drive_upload = "rclone copy ~/Documents jujodeve:";
+    gdu = "google_drive_upload";
+    zed = "zeditor";
   };
 
   ### servicess ################################################################
@@ -133,24 +126,50 @@ in
 
   ### packages #################################################################
   environment.systemPackages = with pkgs; [
+    exfat
+    exfatprogs
+    ntfs3g
     usbutils
     pciutils
+    gnumake
+    cmake
+    gcc
     nixd
     nixfmt-rfc-style
+    zip
+    unzip
+    p7zip
     killall
     wget
     fastfetch
+    wlr-randr
     mpv
+    htop
+    fuse
+    wl-clipboard
+    xclip
     virtiofsd
     gparted
     qmk
     qmk-udev-rules
+    vial
+    spotify
     gimp
     rclone
+    libreoffice
+    inkscape
+    python3
     ventoy-full
+    transmission_3
+    transmission_3-qt
     ghostscript
+    google-chrome
     firefox
     dwt1-shell-color-scripts
+    emacs
+    eza
+    lazygit
+    zed-editor
   ];
 
   fonts.packages = with pkgs; [
@@ -160,6 +179,7 @@ in
     ubuntu_font_family
   ];
 
+  ### programs #################################################################
   programs = {
     mtr.enable = true;
     gnupg.agent = {
@@ -169,13 +189,17 @@ in
     };
     fuse.userAllowOther = true;
     dconf.enable = true;
-  };
 
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
+    neovim = {
+      enable = true;
+      defaultEditor = true;
+      viAlias = true;
+      vimAlias = true;
+    };
+
+    git.enable = true;
+
+    fish.enable = true;
   };
 
 }

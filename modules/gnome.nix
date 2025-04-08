@@ -17,6 +17,7 @@
     services.xserver.desktopManager.gnome.enable = true;
 
     environment.systemPackages = with pkgs; [
+      ghostty
       mutter
       gnome-tweaks
       gnomeExtensions.tiling-assistant
