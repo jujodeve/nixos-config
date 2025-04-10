@@ -12,7 +12,7 @@ in
     ./qmk.nix
     ./steam.nix
     ./libvirt.nix
-    ./ttc-prices-update.nix
+    ./ttc-price-update.nix
   ];
 
   cups.enable = lib.mkDefault true;
