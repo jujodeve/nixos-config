@@ -25,11 +25,15 @@
       };
       spiceUSBRedirection.enable = true;
     };
+
     programs.virt-manager = {
       enable = true;
       package = pkgs.virt-manager;
     };
     #virtualisation.tpm.enable = true;
-
+    
+    environment.systemPackages = with pkgs; [
+      gnome-boxes
+    ];
   };
 }
