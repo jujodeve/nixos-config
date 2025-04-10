@@ -14,7 +14,7 @@
 
     users.defaultUserShell = pkgs.fish;
 
-    fish.enable = true;
+    programs.fish.enable = true;
 
   };
 }
