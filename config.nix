@@ -93,7 +93,6 @@ in
       "libvirtd"
     ];
   };
-  users.defaultUserShell = pkgs.fish;
 
   users.users.filofem = lib.mkIf (hostname == "ffm-nixos") {
     isNormalUser = true;
@@ -177,6 +176,7 @@ in
     dwt1-shell-color-scripts
     emacs
     eza
+    bat
     lazygit
     zed-editor
   ];
@@ -208,7 +208,6 @@ in
 
     git.enable = true;
 
-    fish.enable = true;
   };
 
 }
