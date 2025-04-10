@@ -1,11 +1,5 @@
 # NixOS
 
-## Easy install
-
-Run the command
-   
-    bash <(curl -fsSL https://gitlab.com/jotix/nixos-config/-/raw/main/scripts/nixos-install.sh)
-	
 ## Preparation
 
 ### Disk layout
@@ -18,7 +12,7 @@ In a disk with GPT partition type, create the following partitions:
 |------------|---------|------|-----------|------------|
 | nixos      | btrfs   |      | @         | /          |
 |            |         |      | @nix      | /nix       |
-| nixos-efi  | fat32   | esp  | -         | -          |
+| NIXOS-EFI  | fat32   | esp  | -         | -          |
 | jtx-data   | btrfs   |      | @home     | /home      | 
 
 ### Disk subvolumes & mount points 
@@ -33,7 +27,7 @@ In a disk with GPT partition type, create the following partitions:
     ### mount all in the right place
     sudo mount LABEL=nixos /mnt -osubvol=/@
     sudo mount --mkdir LABEL=nixos /mnt/nix -osubvol=/@nix
-    sudo mount --mkdir LABEL=nixos-efi /mnt/boot
+    sudo mount --mkdir LABEL=NIXOS-EFI /mnt/boot/efi
     sudo mount --mkdir LABEL=jtx-data /mnt/home -osubvol=/@home
 
 ## Installation
