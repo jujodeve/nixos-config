@@ -177,6 +177,7 @@ in
     emacs
     eza
     bat
+    powerline-go
     lazygit
     zed-editor
   ];
