@@ -30,28 +30,28 @@ in
 
   ### root
   fileSystems."/" = {
-    device = "/dev/disk/by-label/NixOS";
+    device = "/dev/disk/by-label/nixos";
     fsType = "btrfs";
     options = [ "subvol=/@" ];
   };
 
   ### nix
   fileSystems."/nix" = {
-    device = "/dev/disk/by-label/NixOS";
+    device = "/dev/disk/by-label/nixos";
     fsType = "btrfs";
     options = [ "subvol=/@nix" ];
   };
 
   ### home
   fileSystems."/home" = {
-    device = "/dev/disk/by-label/NixOS";
+    device = "/dev/disk/by-label/jtx-data";
     fsType = "btrfs";
     options = [ "subvol=/@home" ];
   };
 
   ### efi
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-label/NIXOS-BOOT";
+  fileSystems."/boot/efi" = {
+    device = "/dev/disk/by-label/nixos-efi";
     fsType = "vfat";
     options = [
       "fmask=0077"
@@ -61,8 +61,8 @@ in
   };
 
   ### NixOS
-  fileSystems."/mnt/NixOS" = {
-    device = "/dev/disk/by-label/NixOS";
+  fileSystems."/mnt/nixos" = {
+    device = "/dev/disk/by-label/nixos";
     fsType = "btrfs";
     options = [ "subvol=/" ];
   };
@@ -83,12 +83,6 @@ in
 
   fileSystems."/mnt/jtx-ssd" = lib.mkIf (hostname == "jtx-nixos") {
     device = "/dev/disk/by-label/jtx-ssd";
-    fsType = "btrfs";
-    options = [ "subvol=/" ];
-  };
-
-  fileSystems."/mnt/jtx-nvme" = lib.mkIf (hostname == "jtx-nixos") {
-    device = "/dev/disk/by-label/jtx-nvme";
     fsType = "btrfs";
     options = [ "subvol=/" ];
   };

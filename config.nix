@@ -11,27 +11,36 @@ let
   hostname = config.networking.hostName;
 in
 
-{
-  imports = [
-    ./modules/default.nix
-    ./hardware-config.nix
-  ];
+  {
+    imports = [
+      ./modules/default.nix
+      ./hardware-config.nix
+    ];
 
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-    "pipe-operators"
-  ];
+    nix.settings.experimental-features = [
+      "nix-command"
+      "flakes"
+      "pipe-operators"
+    ];
 
-  nixpkgs.config.allowUnfree = true;
+    nixpkgs.config.allowUnfree = true;
 
-  system.stateVersion = "24.11";
+    system.stateVersion = "24.11";
 
   ### boot loader #############################################################
-  boot.loader = {
-    systemd-boot.enable = true;
-    systemd-boot.consoleMode = "auto";
-    efi.canTouchEfiVariables = true;
+  boot = {
+    loader = {
+      efi = {
+        canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot/efi";
+      };
+      grub = {
+        enable = true;
+        efiSupport = true;
+        device = "nodev";
+        # useOSProber = true;
+      };
+    };
   };
 
   ### graphics drivers ########################################################

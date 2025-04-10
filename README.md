@@ -14,35 +14,27 @@ Make the necesary disk preparations:
 
 In a disk with GPT partition type, create the following partitions:
 
-| PART | LABEL      | SIZE | FS TYPE | FLAG | SUBVOLUME | MOUNTPOINT |
-|------|------------|------|---------|------|-----------|------------|
-| 1    | NIXOS-BOOT | 1GiB | fat32   | esp  | -         | -          |
-| 2    | NixOS      | 100% | btrfs   |      | @         | /          |
-|      |            |      |         |      | @nix      | /nix       |
-|      |            |      |         |      | @home     | /home      |
+| LABEL      | FS TYPE | FLAG | SUBVOLUME | MOUNTPOINT |
+|------------|---------|------|-----------|------------|
+| nixos      | btrfs   |      | @         | /          |
+|            |         |      | @nix      | /nix       |
+| nixos-efi  | fat32   | esp  | -         | -          |
+| jtx-data   | btrfs   |      | @home     | /home      | 
 
 ### Disk subvolumes & mount points 
 
-    ### make sure nothing in mounted in /mnt
-	sudo umount -R /mnt
-	
 	### create the subvolumes
-    sudo mount LABEL=NixOS /mnt
-    sudo btrfs subvolume create /mnt/@
-    sudo btrfs subvolume create /mnt/@nix
-    sudo btrfs subvolume create /mnt/@home
-    sudo umount -R /mnt
+    sudo mount --mkdir LABEL=nixos /temp/nixos
+    sudo btrfs subvolume create /temp/nixos/@
+    sudo btrfs subvolume create /temp/nixos/@nix
+    sudo mount --mkdir LABEL=jtx-data /temp/jtx-data
+    [[ ! -d /temp/jtx-data/home ]] && sudo btrfs subvolume create /temp/jtx-data/@home
     
-	### make the directories for the new system
-    sudo mount LABEL=NixOS /mnt -osubvol=/@
-    sudo mkdir -p /mnt/home
-    sudo mkdir -p /mnt/nix
-    sudo mkdir -p /mnt/boot
-
     ### mount all in the right place
-    sudo mount LABEL=NixOS /mnt/home -osubvol=/@home
-    sudo mount LABEL=NixOS /mnt/nix -osubvol=/@nix
-    sudo mount LABEL=NIXOS-BOOT /mnt/boot
+    sudo mount LABEL=nixos /mnt -osubvol=/@
+    sudo mount --mkdir LABEL=nixos /mnt/nix -osubvol=/@nix
+    sudo mount --mkdir LABEL=nixos-efi /mnt/boot
+    sudo mount --mkdir LABEL=jtx-data /mnt/home -osubvol=/@home
 
 ## Installation
 
@@ -50,13 +42,17 @@ In a disk with GPT partition type, create the following partitions:
 
 ## Post Intall tasks
 
-Set jotix's password
+chroot in the new system
 
-    sudo nixos-enter --command 'passwd jotix'
+    sudo nixos-enter 
 
-Set filofem password (for ffm host)
+Set users passwords and home folder
 
-    sudo nixos-enter --command  'passwd filofem'
+    passwd jotix
+    passwd filofem
+    ### in case of existing home directory
+    chown -R jotix /home/jotix
+    chown -R filofem /home/filofem
 
 Unmount & reboot
 
