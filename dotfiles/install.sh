@@ -2,6 +2,8 @@
 
 SCRIPT_PATH=$(dirname $(realpath -s $0))
 
+THIS_SCRIPT=$(realpath -s $0)
+
 DOTFILES_PATH=$SCRIPT_PATH
 
 TARGET_PATH=$HOME
@@ -19,7 +21,7 @@ process-file() {
 
     [[ -f $DESTINY ]] && mv $DESTINY $DESTINY.backup
 
-    [[ -f $FILE ]] && [[ $file != "install.sh" ]] && echo procesing $DESTINY && ln -sf $FILE $DESTINY
+    [[ -f $FILE ]] && [[ "$FILE" != "$THIS_SCRIPT" ]] && echo procesing $FILE && ln -sf $FILE $DESTINY
 
 }
 
