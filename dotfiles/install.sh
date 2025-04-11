@@ -2,7 +2,7 @@
 
 SCRIPT_PATH=$(dirname $(realpath -s $0))
 
-DOTFILES_PATH=$SCRIPT_PATH/dotfiles
+DOTFILES_PATH=$SCRIPT_PATH
 
 TARGET_PATH=$HOME
 
@@ -19,7 +19,7 @@ process-file() {
 
     [[ -f $DESTINY ]] && mv $DESTINY $DESTINY.backup
 
-    [[ -f $FILE ]] && echo procesing $DESTINY && ln -sf $FILE $DESTINY
+    [[ -f $FILE ]] && [[ $file != "install.sh" ]] && echo procesing $DESTINY && ln -sf $FILE $DESTINY
 
 }
 
@@ -32,4 +32,3 @@ echo
 echo Linking dotfiles.
 process-dir $DOTFILES_PATH
 
-$SCRIPT_PATH/scripts/gnome-settings.sh
